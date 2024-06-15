@@ -23,10 +23,13 @@ import java.util.List;
 public class MenuController {
 
     private final MenuService service;
+    private final MenuService menuService;
 
     @Autowired
-    public MenuController(MenuService service) {
+    public MenuController(MenuService service, MenuService menuService) {
         this.service = service;
+        this.menuService = menuService;
+
     }
 
     @GetMapping("/{menuCode}")
@@ -99,6 +102,30 @@ public class MenuController {
     public String registNewMenu(MenuDTO menuDTO) {
 
         service.registNewMenu(menuDTO);
+
+        return "redirect:/menu/list";
+    }
+
+    @GetMapping("/modify")
+    public void modifyPage(){}
+
+    @PostMapping("/modify")
+    public String modifyMenu(MenuDTO modifyMenu){
+
+        service.modifyMenu(modifyMenu);
+        
+        return "redirect:/menu/" + modifyMenu.getMenuCode();
+    }
+
+    @GetMapping("/delete")
+    public void deletePage(){
+
+    }
+
+    @PostMapping("/delete")
+    public String deleteMenu(@RequestParam int menuCode) {
+
+        service.deleteMenu(menuCode);
 
         return "redirect:/menu/list";
     }

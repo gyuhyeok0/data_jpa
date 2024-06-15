@@ -92,4 +92,29 @@ public class MenuService {
         repository.save(modelMapper.map(menuDTO, Menu.class));
 
     }
+
+
+    @Transactional
+    public void modifyMenu(MenuDTO modifyMenu) {
+
+        Menu foundMenu = repository.findById(modifyMenu.getMenuCode()).orElseThrow(IllegalArgumentException::new);
+
+//        setter 사용 (setter 사용은 지양 한다.)
+//        foundMenu.setMenuName(modifyMenu.getMenuName());
+//
+//        @Builder
+//        foundMenu = foundMenu.toBuilder().menuName(modifyMenu.getMenuName()).build();
+//        repository.save(foundMenu);
+
+//        Enity 클래스 내부에서 builder 패턴을 사용해서 구현
+        foundMenu = foundMenu.menuName(modifyMenu.getMenuName()).builder();
+        repository.save(foundMenu);
+
+    }
+
+    public void deleteMenu(int menuCode) {
+
+        repository.deleteById(menuCode);
+    }
+
 }
